@@ -44,16 +44,19 @@ message WebsiteRequest{
 }
 
 message  WebsiteReply{
+  message Home{
     message CategoryName{
       string categoryName=1;
     }
     message WebSite {
-       int32 category=1;
-       string websiteName=2;
-       string websiteIcon=3;
-       string websiteUrl=4;
-       string summary=5;
+      int32 category=1;
+      string websiteName=2;
+      string websiteIcon=3;
+      string websiteUrl=4;
+      string summary=5;
     }
-    CategoryName category=1;
+    CategoryName categoryName=1;
     repeated WebSite website=2;
+  }
+   Home home=1;
 }
