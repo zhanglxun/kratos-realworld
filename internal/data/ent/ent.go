@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"go-server/internal/data/ent/account"
 	"go-server/internal/data/ent/article"
+	"go-server/internal/data/ent/category"
 	"go-server/internal/data/ent/website"
 	"reflect"
 
@@ -67,9 +68,10 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		account.Table: account.ValidColumn,
-		article.Table: article.ValidColumn,
-		website.Table: website.ValidColumn,
+		account.Table:  account.ValidColumn,
+		article.Table:  article.ValidColumn,
+		category.Table: category.ValidColumn,
+		website.Table:  website.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

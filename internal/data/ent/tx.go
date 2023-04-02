@@ -16,6 +16,8 @@ type Tx struct {
 	Account *AccountClient
 	// Article is the client for interacting with the Article builders.
 	Article *ArticleClient
+	// Category is the client for interacting with the Category builders.
+	Category *CategoryClient
 	// Website is the client for interacting with the Website builders.
 	Website *WebsiteClient
 
@@ -151,6 +153,7 @@ func (tx *Tx) Client() *Client {
 func (tx *Tx) init() {
 	tx.Account = NewAccountClient(tx.config)
 	tx.Article = NewArticleClient(tx.config)
+	tx.Category = NewCategoryClient(tx.config)
 	tx.Website = NewWebsiteClient(tx.config)
 }
 

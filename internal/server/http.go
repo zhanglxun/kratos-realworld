@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/go-kratos/swagger-api/openapiv2"
 	v1 "go-server/api/realworld/v1"
 	"go-server/internal/conf"
 	"go-server/internal/service"
@@ -12,6 +13,9 @@ import (
 
 // NewHTTPServer new an HTTP server.
 func NewHTTPServer(c *conf.Server, greeter *service.RealWorldService, logger log.Logger) *http.Server {
+	//注册openAPIV2
+	openAPIhandler := openapiv2.NewHandler()
+
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -27,6 +31,9 @@ func NewHTTPServer(c *conf.Server, greeter *service.RealWorldService, logger log
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
+	//注册swagger
+	srv.HandlePrefix("/q/", openAPIhandler)
+
 	v1.RegisterRealWorldHTTPServer(srv, greeter)
 	return srv
 }

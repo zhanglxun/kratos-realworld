@@ -26,6 +26,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/realoworld.v1.HelloReply'
+    /website/websiteHome:
+        get:
+            tags:
+                - RealWorld
+            operationId: RealWorld_WebsiteHome
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/realoworld.v1.WebsiteList'
     /website/websiteList:
         get:
             tags:
@@ -57,10 +69,17 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
+        realoworld.v1.WebsiteList:
+            type: object
+            properties:
+                websiteReply:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/realoworld.v1.WebsiteReply'
         realoworld.v1.WebsiteReply:
             type: object
             properties:
-                category:
+                categoryName:
                     $ref: '#/components/schemas/realoworld.v1.WebsiteReply_CategoryName'
                 website:
                     type: array

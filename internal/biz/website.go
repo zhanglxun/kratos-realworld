@@ -24,20 +24,22 @@ type Website struct {
 
 // WebsiteRepo .
 type WebsiteRepo interface {
+	Save()
+	Update()
+	Delete()
 	WebSiteList(context.Context, int32, int32) ([]*Website, error)
 }
 
-type WebsiteUsecase struct {
+func (ws *ContentUsecase) WebSiteList(ctx context.Context, category int32, typ int32) (wr []*Website, err error) {
+	wr, err = ws.repo.WebSiteList(ctx, category, typ)
+	return wr, err
+}
+
+type ContentUsecase struct {
 	repo WebsiteRepo
 	log  *log.Helper
 }
 
-func NewWebsiteUsecase(repo WebsiteRepo, logger log.Logger) *WebsiteUsecase {
-	return &WebsiteUsecase{repo: repo, log: log.NewHelper(logger)}
-}
-
-func (ws *WebsiteUsecase) WebSiteList(ctx context.Context, category int32, typ int32) (wr []*Website, err error) {
-
-	wr, err = ws.repo.WebSiteList(ctx, category, typ)
-	return wr, err
+func NewWebsiteUsecase(repo WebsiteRepo, logger log.Logger) *ContentUsecase {
+	return &ContentUsecase{repo: repo, log: log.NewHelper(logger)}
 }

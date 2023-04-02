@@ -12,14 +12,14 @@ var ProviderSet = wire.NewSet(NewRealWorldService)
 // RealWorldService is a greeter service.
 type RealWorldService struct {
 	v1.UnimplementedRealWorldServer
-	ws *biz.WebsiteUsecase
+	ws *biz.ContentUsecase
 	uc *biz.GreeterUsecase
 }
 
 // NewRealWorldService new a greeter service.
 func NewRealWorldService(
 	uc *biz.GreeterUsecase,
-	ws *biz.WebsiteUsecase,
+	ws *biz.ContentUsecase,
 ) *RealWorldService {
 	return &RealWorldService{uc: uc, ws: ws}
 }

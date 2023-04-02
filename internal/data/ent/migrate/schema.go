@@ -52,6 +52,18 @@ var (
 		Columns:    CArticleColumns,
 		PrimaryKey: []*schema.Column{CArticleColumns[0]},
 	}
+	// CCategoryColumns holds the columns for the "c_category" table.
+	CCategoryColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt32, Increment: true, SchemaType: map[string]string{"mysql": "int(20)"}},
+		{Name: "category_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
+		{Name: "category_name", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(32)"}},
+	}
+	// CCategoryTable holds the schema information for the "c_category" table.
+	CCategoryTable = &schema.Table{
+		Name:       "c_category",
+		Columns:    CCategoryColumns,
+		PrimaryKey: []*schema.Column{CCategoryColumns[0]},
+	}
 	// CWebsiteColumns holds the columns for the "c_website" table.
 	CWebsiteColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},
@@ -78,6 +90,7 @@ var (
 	Tables = []*schema.Table{
 		SAccountTable,
 		CArticleTable,
+		CCategoryTable,
 		CWebsiteTable,
 	}
 )
@@ -88,6 +101,9 @@ func init() {
 	}
 	CArticleTable.Annotation = &entsql.Annotation{
 		Table: "c_article",
+	}
+	CCategoryTable.Annotation = &entsql.Annotation{
+		Table: "c_category",
 	}
 	CWebsiteTable.Annotation = &entsql.Annotation{
 		Table: "c_website",

@@ -22,7 +22,11 @@ service RealWorld {
   rpc WebSiteList(WebsiteRequest) returns(WebsiteReply){
     option (google.api.http) = {
       get:"/website/websiteList",
-
+    };
+  }
+  rpc WebsiteHome(WebHomeRequest) returns(WebsiteList){
+    option (google.api.http) = {
+      get:"/website/websiteHome",
     };
   }
 
@@ -38,13 +42,22 @@ message HelloReply {
   string message = 1;
 }
 
+
+//首页的请求
+message WebHomeRequest{
+
+}
+message WebsiteList{
+  repeated WebsiteReply websiteReply=1;
+}
+//分类的
+
+// website 常规操作
 message WebsiteRequest{
     int32 category=1;
     int32 type=2;
 }
-
-message  WebsiteReply{
-  message Home{
+message WebsiteReply{
     message CategoryName{
       string categoryName=1;
     }
@@ -57,6 +70,22 @@ message  WebsiteReply{
     }
     CategoryName categoryName=1;
     repeated WebSite website=2;
-  }
-   Home home=1;
+}
+//文章
+message ArticleRequest{
+  string CurrentPage=1;
+  string PageNumber=2;
+}
+message ArticleReply{
+  int64 id=1;
+  int32 sortId=2;
+  string name=3;
+  int32 categoryId=4;
+  string  recommend=5;
+  string description=6;
+  string contentBody=7;
+  string imageUrl=8;
+  int32 status=9;
+  int32 clickCount=10;
+  int32 likeCount=11;
 }
