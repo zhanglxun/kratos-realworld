@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package realoworld.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "kratos-realworld/api/realoworld/v1;v1";
+//暂时用不到java相关的内容可以注释或删除
+//option java_multiple_files = true;
+//option java_package = "dev.kratos.api.realworld.v1";
+//option java_outer_classname = "realoworldProtoV1";
+
+// The greeting service definition.
+service RealWorld {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {
+    option (google.api.http) = {
+      get: "/realworld/{name}"
+    };
+  }
+
+  rpc WebSiteList(WebsiteRequest) returns(WebsiteReply){
+    option (google.api.http) = {
+      get:"/website/websiteList",
+
+    };
+  }
+
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+message WebsiteRequest{
+    int32 category=1;
+    int32 type=2;
+}
+
+message  WebsiteReply{
+    message CategoryName{
+      string categoryName=1;
+    }
+    message WebSite {
+       int32 category=1;
+       string websiteName=2;
+       string websiteIcon=3;
+       string websiteUrl=4;
+       string summary=5;
+    }
+    CategoryName category=1;
+    repeated WebSite website=2;
+}

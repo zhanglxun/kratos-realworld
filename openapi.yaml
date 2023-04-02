@@ -1,0 +1,89 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: RealWorld API
+    description: The greeting service definition.
+    version: 0.0.1
+paths:
+    /realworld/{name}:
+        get:
+            tags:
+                - RealWorld
+            description: Sends a greeting
+            operationId: RealWorld_SayHello
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/realoworld.v1.HelloReply'
+    /website/websiteList:
+        get:
+            tags:
+                - RealWorld
+            operationId: RealWorld_WebSiteList
+            parameters:
+                - name: category
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: type
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/realoworld.v1.WebsiteReply'
+components:
+    schemas:
+        realoworld.v1.HelloReply:
+            type: object
+            properties:
+                message:
+                    type: string
+            description: The response message containing the greetings
+        realoworld.v1.WebsiteReply:
+            type: object
+            properties:
+                category:
+                    $ref: '#/components/schemas/realoworld.v1.WebsiteReply_CategoryName'
+                website:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/realoworld.v1.WebsiteReply_WebSite'
+        realoworld.v1.WebsiteReply_CategoryName:
+            type: object
+            properties:
+                categoryName:
+                    type: string
+        realoworld.v1.WebsiteReply_WebSite:
+            type: object
+            properties:
+                category:
+                    type: integer
+                    format: int32
+                websiteName:
+                    type: string
+                websiteIcon:
+                    type: string
+                websiteUrl:
+                    type: string
+                summary:
+                    type: string
+tags:
+    - name: RealWorld
