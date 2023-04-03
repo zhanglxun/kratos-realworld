@@ -28,11 +28,10 @@ func (w *websiteRepo) Delete() {
 	panic("implement me")
 }
 
-func (w *websiteRepo) WebSiteList(ctx context.Context, category int32, typ int32) ([]*biz.Website, error) {
+func (w *websiteRepo) WebSiteList(ctx context.Context, typ int32) ([]*biz.Website, error) {
 	//TODO implement me
 	ws, _ := w.data.db.Website.Query().
 		Where(
-			website.CategoryEQ(category),
 			website.TypeEQ(typ),
 		).All(ctx)
 	rv := make([]*biz.Website, 0)

@@ -28,7 +28,7 @@ type RealWorldHTTPServer interface {
 	CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error)
 	// SayHello Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
-	WebSiteHome(context.Context, *WebHomeRequest) (*WebSiteHomeReply, error)
+	WebSiteHome(context.Context, *WebHomeRequest) (*MultipleWebsiteReply, error)
 	WebSiteList(context.Context, *WebsiteRequest) (*WebsiteReply, error)
 }
 
@@ -95,7 +95,7 @@ func _RealWorld_WebSiteHome0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http
 		if err != nil {
 			return err
 		}
-		reply := out.(*WebSiteHomeReply)
+		reply := out.(*MultipleWebsiteReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -122,7 +122,7 @@ func _RealWorld_CategoryList0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx htt
 type RealWorldHTTPClient interface {
 	CategoryList(ctx context.Context, req *CategoryRequest, opts ...http.CallOption) (rsp *MultipleCategoryReply, err error)
 	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
-	WebSiteHome(ctx context.Context, req *WebHomeRequest, opts ...http.CallOption) (rsp *WebSiteHomeReply, err error)
+	WebSiteHome(ctx context.Context, req *WebHomeRequest, opts ...http.CallOption) (rsp *MultipleWebsiteReply, err error)
 	WebSiteList(ctx context.Context, req *WebsiteRequest, opts ...http.CallOption) (rsp *WebsiteReply, err error)
 }
 
@@ -160,8 +160,8 @@ func (c *RealWorldHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest
 	return &out, err
 }
 
-func (c *RealWorldHTTPClientImpl) WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...http.CallOption) (*WebSiteHomeReply, error) {
-	var out WebSiteHomeReply
+func (c *RealWorldHTTPClientImpl) WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...http.CallOption) (*MultipleWebsiteReply, error) {
+	var out MultipleWebsiteReply
 	pattern := "/website/websiteHome"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationRealWorldWebSiteHome))

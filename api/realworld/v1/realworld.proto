@@ -24,7 +24,7 @@ service RealWorld {
       get:"/website/websiteList",
     };
   }
-  rpc WebSiteHome(WebHomeRequest) returns(WebSiteHomeReply){
+  rpc WebSiteHome(WebHomeRequest) returns(MultipleWebsiteReply){
     option (google.api.http) = {
       get:"/website/websiteHome",
     };
@@ -70,32 +70,36 @@ message MultipleCategoryReply{
   repeated Categories category = 1;
 }
 
-//首页的请求
-message WebHomeRequest{
-
-}
-message WebSiteHomeReply{
-  repeated WebsiteReply websiteReply=1;
-}
-
 // website 常规操作
 message WebsiteRequest{
     int32 category=1;
     int32 type=2;
 }
+//公共的提取出来
+message WebSite {
+  int32 category=1;
+  string websiteName=2;
+  string websiteIcon=3;
+  string websiteUrl=4;
+  string summary=5;
+}
 message WebsiteReply{
     message CategoryName{
       string categoryName=1;
     }
-    message WebSite {
-      int32 category=1;
-      string websiteName=2;
-      string websiteIcon=3;
-      string websiteUrl=4;
-      string summary=5;
-    }
     CategoryName categoryName=1;
     repeated WebSite website=2;
+}
+//首页的请求
+message WebHomeRequest{
+  int64 catePare=1;
+}
+message MultipleWebsiteReply{
+  message WebsiteReply{
+    string categoryName=1;
+    repeated WebSite website=2;
+  }
+  repeated WebsiteReply websiteReply=1;
 }
 //文章
 message ArticleRequest{

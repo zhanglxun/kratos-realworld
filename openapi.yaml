@@ -49,13 +49,19 @@ paths:
             tags:
                 - RealWorld
             operationId: RealWorld_WebSiteHome
+            parameters:
+                - name: catePare
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/realoworld.v1.WebSiteHomeReply'
+                                $ref: '#/components/schemas/realoworld.v1.MultipleWebsiteReply'
     /website/websiteList:
         get:
             tags:
@@ -111,28 +117,23 @@ components:
                 Status:
                     type: integer
                     format: int32
-        realoworld.v1.WebSiteHomeReply:
+        realoworld.v1.MultipleWebsiteReply:
             type: object
             properties:
                 websiteReply:
                     type: array
                     items:
-                        $ref: '#/components/schemas/realoworld.v1.WebsiteReply'
-        realoworld.v1.WebsiteReply:
-            type: object
-            properties:
-                categoryName:
-                    $ref: '#/components/schemas/realoworld.v1.WebsiteReply_CategoryName'
-                website:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/realoworld.v1.WebsiteReply_WebSite'
-        realoworld.v1.WebsiteReply_CategoryName:
+                        $ref: '#/components/schemas/realoworld.v1.MultipleWebsiteReply_WebsiteReply'
+        realoworld.v1.MultipleWebsiteReply_WebsiteReply:
             type: object
             properties:
                 categoryName:
                     type: string
-        realoworld.v1.WebsiteReply_WebSite:
+                website:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/realoworld.v1.WebSite'
+        realoworld.v1.WebSite:
             type: object
             properties:
                 category:
@@ -145,6 +146,21 @@ components:
                 websiteUrl:
                     type: string
                 summary:
+                    type: string
+            description: 公共的提取出来
+        realoworld.v1.WebsiteReply:
+            type: object
+            properties:
+                categoryName:
+                    $ref: '#/components/schemas/realoworld.v1.WebsiteReply_CategoryName'
+                website:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/realoworld.v1.WebSite'
+        realoworld.v1.WebsiteReply_CategoryName:
+            type: object
+            properties:
+                categoryName:
                     type: string
 tags:
     - name: RealWorld

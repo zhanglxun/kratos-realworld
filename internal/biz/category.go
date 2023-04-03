@@ -21,7 +21,7 @@ type CategoryRepo interface {
 	CategoryList(ctx context.Context, category int64) ([]*Category, error)
 }
 
-//内容数据
+// CategoryList 依赖注入
 func (ws *ContentUsecase) CategoryList(ctx context.Context, categoryPara int64) (wr []*Category, err error) {
 	wr, err = ws.repoCa.CategoryList(ctx, categoryPara)
 	return wr, err

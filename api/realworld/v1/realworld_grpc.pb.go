@@ -32,7 +32,7 @@ type RealWorldClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
 	WebSiteList(ctx context.Context, in *WebsiteRequest, opts ...grpc.CallOption) (*WebsiteReply, error)
-	WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...grpc.CallOption) (*WebSiteHomeReply, error)
+	WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...grpc.CallOption) (*MultipleWebsiteReply, error)
 	CategoryList(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*MultipleCategoryReply, error)
 }
 
@@ -62,8 +62,8 @@ func (c *realWorldClient) WebSiteList(ctx context.Context, in *WebsiteRequest, o
 	return out, nil
 }
 
-func (c *realWorldClient) WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...grpc.CallOption) (*WebSiteHomeReply, error) {
-	out := new(WebSiteHomeReply)
+func (c *realWorldClient) WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...grpc.CallOption) (*MultipleWebsiteReply, error) {
+	out := new(MultipleWebsiteReply)
 	err := c.cc.Invoke(ctx, RealWorld_WebSiteHome_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ type RealWorldServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 	WebSiteList(context.Context, *WebsiteRequest) (*WebsiteReply, error)
-	WebSiteHome(context.Context, *WebHomeRequest) (*WebSiteHomeReply, error)
+	WebSiteHome(context.Context, *WebHomeRequest) (*MultipleWebsiteReply, error)
 	CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error)
 	mustEmbedUnimplementedRealWorldServer()
 }
@@ -102,7 +102,7 @@ func (UnimplementedRealWorldServer) SayHello(context.Context, *HelloRequest) (*H
 func (UnimplementedRealWorldServer) WebSiteList(context.Context, *WebsiteRequest) (*WebsiteReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WebSiteList not implemented")
 }
-func (UnimplementedRealWorldServer) WebSiteHome(context.Context, *WebHomeRequest) (*WebSiteHomeReply, error) {
+func (UnimplementedRealWorldServer) WebSiteHome(context.Context, *WebHomeRequest) (*MultipleWebsiteReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WebSiteHome not implemented")
 }
 func (UnimplementedRealWorldServer) CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error) {

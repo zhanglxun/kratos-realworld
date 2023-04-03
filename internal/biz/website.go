@@ -23,23 +23,51 @@ type Website struct {
 	ModifyTime  time.Time
 }
 
+type CategoryHome struct {
+	CategoryName string
+	Website      Website
+}
+
 // WebsiteRepo .
 type WebsiteRepo interface {
 	Save()
 	Update()
 	Delete()
-	WebSiteList(context.Context, int32, int32) ([]*Website, error)
+	WebSiteList(context.Context, int32) ([]*Website, error)
 	WebSiteHome(ctx context.Context) ([]*v1.WebsiteReply, error)
 }
 
-func (ws *ContentUsecase) WebSiteList(ctx context.Context, category int32, typ int32) (wr []*Website, err error) {
-	wr, err = ws.repoWs.WebSiteList(ctx, category, typ)
+func (ws *ContentUsecase) WebSiteList(ctx context.Context, typ int32) (wr []*Website, err error) {
+	wr, err = ws.repoWs.WebSiteList(ctx, typ)
 	return wr, err
 }
 
-func (ws *ContentUsecase) WebSiteHome(ctx context.Context) ([]*v1.WebsiteReply, error) {
-	wh, err := ws.repoWs.WebSiteHome(ctx)
-	return wh, err
+func (ws *ContentUsecase) WebSiteHome(ctx context.Context) (webHome []*CategoryHome, err error) {
+
+	wc, err := ws.repoCa.CategoryList(ctx, 0)
+	wh, err := ws.repoWs.WebSiteList(ctx, 1)
+	reply := make([]*CategoryHome, 0)
+	for _, c := range wc {
+
+		reply = append(reply, &CategoryHome{
+			CategoryName: c.CategoryName,
+		})
+
+		for _, w := range wh {
+			if c.CategoryId == w.Category {
+
+				reply = append(reply, &CategoryHome{
+					Website: Website{
+						ID:          w.ID,
+						WebsiteName: w.WebsiteName,
+						WebsiteUrl:  w.WebsiteUrl,
+						WebsiteIcon: w.WebsiteIcon,
+					},
+				})
+			}
+		}
+	}
+	return reply, err
 }
 
 type ContentUsecase struct {
