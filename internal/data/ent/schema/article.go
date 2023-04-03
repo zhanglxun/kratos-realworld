@@ -26,49 +26,49 @@ func (Article) Fields() []ent.Field {
 
 	return []ent.Field{
 
-		field.Int32("id").SchemaType(map[string]string{
-			dialect.MySQL: "int(20)", // Override MySQL.
-		}).Comment("主键").Unique(),
+		field.Int64("id").SchemaType(map[string]string{
+			dialect.MySQL: "bigint(20)", // Override MySQL.
+		}).Unique(),
 
 		field.Int32("sort_id").SchemaType(map[string]string{
-			dialect.MySQL: "int(2)", // Override MySQL.
-		}).Optional().Comment("排序ID"),
+			dialect.MySQL: "int(11)", // Override MySQL.
+		}).Optional().Comment("排序id"),
 
 		field.String("name").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(200)", // Override MySQL.
 		}).Optional().Comment("标题名称"),
 
 		field.Int32("category_id").SchemaType(map[string]string{
-			dialect.MySQL: "int(20)", // Override MySQL.
-		}).Optional().Comment("资讯分类的主键"),
+			dialect.MySQL: "int(11)", // Override MySQL.
+		}).Optional().Comment("分类类别id"),
 
 		field.String("recommend").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(255)", // Override MySQL.
-		}).Optional().Comment("小编一句话推荐语"),
+		}).Optional().Comment("推荐语"),
 
 		field.String("description").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(255)", // Override MySQL.
-		}).Optional().Comment("简介内容描述"),
+		}).Optional().Comment("描述备注"),
 
 		field.Text("content_body").SchemaType(map[string]string{
 			dialect.MySQL: "longtext", // Override MySQL.
-		}).Optional().Comment("内容"),
+		}).Optional().Comment("内容体"),
 
 		field.String("image_url").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(200)", // Override MySQL.
-		}).Optional().Comment("图片缩略图"),
+		}).Optional().Comment("图片URL"),
 
 		field.Int32("status").SchemaType(map[string]string{
-			dialect.MySQL: "int(2)", // Override MySQL.
-		}).Optional().Comment("状态 1：启用 0：禁用"),
+			dialect.MySQL: "int(11)", // Override MySQL.
+		}).Optional().Comment("状态"),
 
 		field.Int32("click_count").SchemaType(map[string]string{
 			dialect.MySQL: "int(11)", // Override MySQL.
-		}).Optional().Comment("浏览次数"),
+		}).Optional().Comment("点击数"),
 
 		field.Int32("like_count").SchemaType(map[string]string{
 			dialect.MySQL: "int(11)", // Override MySQL.
-		}).Optional().Comment("点赞次数"),
+		}).Optional().Comment("喜欢数"),
 
 		field.Int64("create_id").SchemaType(map[string]string{
 			dialect.MySQL: "bigint(20)", // Override MySQL.
@@ -86,7 +86,6 @@ func (Article) Fields() []ent.Field {
 			dialect.MySQL: "datetime", // Override MySQL.
 		}).Optional().Default(time.Now).UpdateDefault(time.Now).Comment("修改时间"),
 	}
-
 }
 
 // Edges of the Article.

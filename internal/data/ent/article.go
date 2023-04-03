@@ -15,27 +15,26 @@ import (
 type Article struct {
 	config `json:"-"`
 	// ID of the ent.
-	// 主键
-	ID int32 `json:"id,omitempty"`
-	// 排序ID
+	ID int64 `json:"id,omitempty"`
+	// 排序id
 	SortID int32 `json:"sort_id,omitempty"`
 	// 标题名称
 	Name string `json:"name,omitempty"`
-	// 资讯分类的主键
+	// 分类类别id
 	CategoryID int32 `json:"category_id,omitempty"`
-	// 小编一句话推荐语
+	// 推荐语
 	Recommend string `json:"recommend,omitempty"`
-	// 简介内容描述
+	// 描述备注
 	Description string `json:"description,omitempty"`
-	// 内容
+	// 内容体
 	ContentBody string `json:"content_body,omitempty"`
-	// 图片缩略图
+	// 图片URL
 	ImageURL string `json:"image_url,omitempty"`
-	// 状态 1：启用 0：禁用
+	// 状态
 	Status int32 `json:"status,omitempty"`
-	// 浏览次数
+	// 点击数
 	ClickCount int32 `json:"click_count,omitempty"`
-	// 点赞次数
+	// 喜欢数
 	LikeCount int32 `json:"like_count,omitempty"`
 	// 创建人id
 	CreateID int64 `json:"create_id,omitempty"`
@@ -78,7 +77,7 @@ func (a *Article) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			a.ID = int32(value.Int64)
+			a.ID = int64(value.Int64)
 		case article.FieldSortID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort_id", values[i])

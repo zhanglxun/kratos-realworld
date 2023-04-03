@@ -209,6 +209,26 @@ func (wu *WebsiteUpdate) ClearDescription() *WebsiteUpdate {
 	return wu
 }
 
+// SetStatus sets the "status" field.
+func (wu *WebsiteUpdate) SetStatus(s string) *WebsiteUpdate {
+	wu.mutation.SetStatus(s)
+	return wu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (wu *WebsiteUpdate) SetNillableStatus(s *string) *WebsiteUpdate {
+	if s != nil {
+		wu.SetStatus(*s)
+	}
+	return wu
+}
+
+// ClearStatus clears the value of the "status" field.
+func (wu *WebsiteUpdate) ClearStatus() *WebsiteUpdate {
+	wu.mutation.ClearStatus()
+	return wu
+}
+
 // SetCreateID sets the "create_id" field.
 func (wu *WebsiteUpdate) SetCreateID(i int64) *WebsiteUpdate {
 	wu.mutation.ResetCreateID()
@@ -401,6 +421,12 @@ func (wu *WebsiteUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if wu.mutation.DescriptionCleared() {
 		_spec.ClearField(website.FieldDescription, field.TypeString)
+	}
+	if value, ok := wu.mutation.Status(); ok {
+		_spec.SetField(website.FieldStatus, field.TypeString, value)
+	}
+	if wu.mutation.StatusCleared() {
+		_spec.ClearField(website.FieldStatus, field.TypeString)
 	}
 	if value, ok := wu.mutation.CreateID(); ok {
 		_spec.SetField(website.FieldCreateID, field.TypeInt64, value)
@@ -633,6 +659,26 @@ func (wuo *WebsiteUpdateOne) ClearDescription() *WebsiteUpdateOne {
 	return wuo
 }
 
+// SetStatus sets the "status" field.
+func (wuo *WebsiteUpdateOne) SetStatus(s string) *WebsiteUpdateOne {
+	wuo.mutation.SetStatus(s)
+	return wuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (wuo *WebsiteUpdateOne) SetNillableStatus(s *string) *WebsiteUpdateOne {
+	if s != nil {
+		wuo.SetStatus(*s)
+	}
+	return wuo
+}
+
+// ClearStatus clears the value of the "status" field.
+func (wuo *WebsiteUpdateOne) ClearStatus() *WebsiteUpdateOne {
+	wuo.mutation.ClearStatus()
+	return wuo
+}
+
 // SetCreateID sets the "create_id" field.
 func (wuo *WebsiteUpdateOne) SetCreateID(i int64) *WebsiteUpdateOne {
 	wuo.mutation.ResetCreateID()
@@ -855,6 +901,12 @@ func (wuo *WebsiteUpdateOne) sqlSave(ctx context.Context) (_node *Website, err e
 	}
 	if wuo.mutation.DescriptionCleared() {
 		_spec.ClearField(website.FieldDescription, field.TypeString)
+	}
+	if value, ok := wuo.mutation.Status(); ok {
+		_spec.SetField(website.FieldStatus, field.TypeString, value)
+	}
+	if wuo.mutation.StatusCleared() {
+		_spec.ClearField(website.FieldStatus, field.TypeString)
 	}
 	if value, ok := wuo.mutation.CreateID(); ok {
 		_spec.SetField(website.FieldCreateID, field.TypeInt64, value)

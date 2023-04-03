@@ -3,7 +3,8 @@ package biz
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/golang/protobuf/ptypes/timestamp"
+	v1 "go-server/api/realworld/v1"
+	"time"
 )
 
 type Website struct {
@@ -17,9 +18,9 @@ type Website struct {
 	Summary     string
 	description string
 	CreateId    int64
-	CreateTime  timestamp.Timestamp
+	CreateTime  time.Time
 	ModifyId    int64
-	ModifyTime  timestamp.Timestamp
+	ModifyTime  time.Time
 }
 
 // WebsiteRepo .
@@ -28,18 +29,25 @@ type WebsiteRepo interface {
 	Update()
 	Delete()
 	WebSiteList(context.Context, int32, int32) ([]*Website, error)
+	WebSiteHome(ctx context.Context) ([]*v1.WebsiteReply, error)
 }
 
 func (ws *ContentUsecase) WebSiteList(ctx context.Context, category int32, typ int32) (wr []*Website, err error) {
-	wr, err = ws.repo.WebSiteList(ctx, category, typ)
+	wr, err = ws.repoWs.WebSiteList(ctx, category, typ)
 	return wr, err
 }
 
-type ContentUsecase struct {
-	repo WebsiteRepo
-	log  *log.Helper
+func (ws *ContentUsecase) WebSiteHome(ctx context.Context) ([]*v1.WebsiteReply, error) {
+	wh, err := ws.repoWs.WebSiteHome(ctx)
+	return wh, err
 }
 
-func NewWebsiteUsecase(repo WebsiteRepo, logger log.Logger) *ContentUsecase {
-	return &ContentUsecase{repo: repo, log: log.NewHelper(logger)}
+type ContentUsecase struct {
+	repoWs WebsiteRepo
+	repoCa CategoryRepo
+	log    *log.Helper
+}
+
+func NewWebsiteUsecase(repo WebsiteRepo, repoCa CategoryRepo, logger log.Logger) *ContentUsecase {
+	return &ContentUsecase{repoWs: repo, repoCa: repoCa, log: log.NewHelper(logger)}
 }

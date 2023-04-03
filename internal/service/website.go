@@ -8,9 +8,7 @@ import (
 func (s *RealWorldService) WebSiteList(ctx context.Context, req *v1.WebsiteRequest) (ws *v1.WebsiteReply, err error) {
 
 	websiteLit, _ := s.ws.WebSiteList(ctx, req.Category, req.Type)
-
 	reply := &v1.WebsiteReply{}
-
 	for _, p := range websiteLit {
 
 		reply.Website = append(reply.Website, &v1.WebsiteReply_WebSite{
@@ -22,10 +20,14 @@ func (s *RealWorldService) WebSiteList(ctx context.Context, req *v1.WebsiteReque
 		})
 	}
 	return reply, err
-
 }
 
-//func (s *RealWorldService) ListAll(ctx context.Context, req *v1.WebsiteRequest) (reply *v1.WebsiteReply, err error) {
-//
-//	return nil, nil
-//}
+func (s *RealWorldService) WebSiteHome(ctx context.Context, req *v1.WebHomeRequest) (ws *v1.WebSiteHomeReply, err error) {
+	rh, err := s.ws.WebSiteHome(ctx)
+	reply := &v1.WebSiteHomeReply{}
+	for _, p := range rh {
+		reply.WebsiteReply = rh
+		println(p)
+	}
+	return reply, err
+}

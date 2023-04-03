@@ -19,22 +19,25 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationRealWorldCategoryList = "/realoworld.v1.RealWorld/CategoryList"
 const OperationRealWorldSayHello = "/realoworld.v1.RealWorld/SayHello"
+const OperationRealWorldWebSiteHome = "/realoworld.v1.RealWorld/WebSiteHome"
 const OperationRealWorldWebSiteList = "/realoworld.v1.RealWorld/WebSiteList"
-const OperationRealWorldWebsiteHome = "/realoworld.v1.RealWorld/WebsiteHome"
 
 type RealWorldHTTPServer interface {
+	CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error)
 	// SayHello Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
+	WebSiteHome(context.Context, *WebHomeRequest) (*WebSiteHomeReply, error)
 	WebSiteList(context.Context, *WebsiteRequest) (*WebsiteReply, error)
-	WebsiteHome(context.Context, *WebHomeRequest) (*WebsiteList, error)
 }
 
 func RegisterRealWorldHTTPServer(s *http.Server, srv RealWorldHTTPServer) {
 	r := s.Route("/")
 	r.GET("/realworld/{name}", _RealWorld_SayHello0_HTTP_Handler(srv))
 	r.GET("/website/websiteList", _RealWorld_WebSiteList0_HTTP_Handler(srv))
-	r.GET("/website/websiteHome", _RealWorld_WebsiteHome0_HTTP_Handler(srv))
+	r.GET("/website/websiteHome", _RealWorld_WebSiteHome0_HTTP_Handler(srv))
+	r.GET("/category/CategoryList", _RealWorld_CategoryList0_HTTP_Handler(srv))
 }
 
 func _RealWorld_SayHello0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
@@ -78,29 +81,49 @@ func _RealWorld_WebSiteList0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http
 	}
 }
 
-func _RealWorld_WebsiteHome0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
+func _RealWorld_WebSiteHome0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in WebHomeRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRealWorldWebsiteHome)
+		http.SetOperation(ctx, OperationRealWorldWebSiteHome)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.WebsiteHome(ctx, req.(*WebHomeRequest))
+			return srv.WebSiteHome(ctx, req.(*WebHomeRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*WebsiteList)
+		reply := out.(*WebSiteHomeReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _RealWorld_CategoryList0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CategoryRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationRealWorldCategoryList)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CategoryList(ctx, req.(*CategoryRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*MultipleCategoryReply)
 		return ctx.Result(200, reply)
 	}
 }
 
 type RealWorldHTTPClient interface {
+	CategoryList(ctx context.Context, req *CategoryRequest, opts ...http.CallOption) (rsp *MultipleCategoryReply, err error)
 	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
+	WebSiteHome(ctx context.Context, req *WebHomeRequest, opts ...http.CallOption) (rsp *WebSiteHomeReply, err error)
 	WebSiteList(ctx context.Context, req *WebsiteRequest, opts ...http.CallOption) (rsp *WebsiteReply, err error)
-	WebsiteHome(ctx context.Context, req *WebHomeRequest, opts ...http.CallOption) (rsp *WebsiteList, err error)
 }
 
 type RealWorldHTTPClientImpl struct {
@@ -109,6 +132,19 @@ type RealWorldHTTPClientImpl struct {
 
 func NewRealWorldHTTPClient(client *http.Client) RealWorldHTTPClient {
 	return &RealWorldHTTPClientImpl{client}
+}
+
+func (c *RealWorldHTTPClientImpl) CategoryList(ctx context.Context, in *CategoryRequest, opts ...http.CallOption) (*MultipleCategoryReply, error) {
+	var out MultipleCategoryReply
+	pattern := "/category/CategoryList"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationRealWorldCategoryList))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
 }
 
 func (c *RealWorldHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloReply, error) {
@@ -124,11 +160,11 @@ func (c *RealWorldHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest
 	return &out, err
 }
 
-func (c *RealWorldHTTPClientImpl) WebSiteList(ctx context.Context, in *WebsiteRequest, opts ...http.CallOption) (*WebsiteReply, error) {
-	var out WebsiteReply
-	pattern := "/website/websiteList"
+func (c *RealWorldHTTPClientImpl) WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...http.CallOption) (*WebSiteHomeReply, error) {
+	var out WebSiteHomeReply
+	pattern := "/website/websiteHome"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationRealWorldWebSiteList))
+	opts = append(opts, http.Operation(OperationRealWorldWebSiteHome))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -137,11 +173,11 @@ func (c *RealWorldHTTPClientImpl) WebSiteList(ctx context.Context, in *WebsiteRe
 	return &out, err
 }
 
-func (c *RealWorldHTTPClientImpl) WebsiteHome(ctx context.Context, in *WebHomeRequest, opts ...http.CallOption) (*WebsiteList, error) {
-	var out WebsiteList
-	pattern := "/website/websiteHome"
+func (c *RealWorldHTTPClientImpl) WebSiteList(ctx context.Context, in *WebsiteRequest, opts ...http.CallOption) (*WebsiteReply, error) {
+	var out WebsiteReply
+	pattern := "/website/websiteList"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationRealWorldWebsiteHome))
+	opts = append(opts, http.Operation(OperationRealWorldWebSiteList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

@@ -7,6 +7,24 @@ info:
     description: The greeting service definition.
     version: 0.0.1
 paths:
+    /category/CategoryList:
+        get:
+            tags:
+                - RealWorld
+            operationId: RealWorld_CategoryList
+            parameters:
+                - name: catePare
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/realoworld.v1.MultipleCategoryReply'
     /realworld/{name}:
         get:
             tags:
@@ -30,14 +48,14 @@ paths:
         get:
             tags:
                 - RealWorld
-            operationId: RealWorld_WebsiteHome
+            operationId: RealWorld_WebSiteHome
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/realoworld.v1.WebsiteList'
+                                $ref: '#/components/schemas/realoworld.v1.WebSiteHomeReply'
     /website/websiteList:
         get:
             tags:
@@ -69,7 +87,31 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
-        realoworld.v1.WebsiteList:
+        realoworld.v1.MultipleCategoryReply:
+            type: object
+            properties:
+                category:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/realoworld.v1.MultipleCategoryReply_Categories'
+        realoworld.v1.MultipleCategoryReply_Categories:
+            type: object
+            properties:
+                ID:
+                    type: integer
+                    format: int64
+                ParentId:
+                    type: integer
+                    format: int64
+                CategoryId:
+                    type: integer
+                    format: int32
+                CategoryName:
+                    type: string
+                Status:
+                    type: integer
+                    format: int32
+        realoworld.v1.WebSiteHomeReply:
             type: object
             properties:
                 websiteReply:

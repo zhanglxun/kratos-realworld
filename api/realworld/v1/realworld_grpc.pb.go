@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	RealWorld_SayHello_FullMethodName    = "/realoworld.v1.RealWorld/SayHello"
-	RealWorld_WebSiteList_FullMethodName = "/realoworld.v1.RealWorld/WebSiteList"
-	RealWorld_WebsiteHome_FullMethodName = "/realoworld.v1.RealWorld/WebsiteHome"
+	RealWorld_SayHello_FullMethodName     = "/realoworld.v1.RealWorld/SayHello"
+	RealWorld_WebSiteList_FullMethodName  = "/realoworld.v1.RealWorld/WebSiteList"
+	RealWorld_WebSiteHome_FullMethodName  = "/realoworld.v1.RealWorld/WebSiteHome"
+	RealWorld_CategoryList_FullMethodName = "/realoworld.v1.RealWorld/CategoryList"
 )
 
 // RealWorldClient is the client API for RealWorld service.
@@ -31,7 +32,8 @@ type RealWorldClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
 	WebSiteList(ctx context.Context, in *WebsiteRequest, opts ...grpc.CallOption) (*WebsiteReply, error)
-	WebsiteHome(ctx context.Context, in *WebHomeRequest, opts ...grpc.CallOption) (*WebsiteList, error)
+	WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...grpc.CallOption) (*WebSiteHomeReply, error)
+	CategoryList(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*MultipleCategoryReply, error)
 }
 
 type realWorldClient struct {
@@ -60,9 +62,18 @@ func (c *realWorldClient) WebSiteList(ctx context.Context, in *WebsiteRequest, o
 	return out, nil
 }
 
-func (c *realWorldClient) WebsiteHome(ctx context.Context, in *WebHomeRequest, opts ...grpc.CallOption) (*WebsiteList, error) {
-	out := new(WebsiteList)
-	err := c.cc.Invoke(ctx, RealWorld_WebsiteHome_FullMethodName, in, out, opts...)
+func (c *realWorldClient) WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...grpc.CallOption) (*WebSiteHomeReply, error) {
+	out := new(WebSiteHomeReply)
+	err := c.cc.Invoke(ctx, RealWorld_WebSiteHome_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *realWorldClient) CategoryList(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*MultipleCategoryReply, error) {
+	out := new(MultipleCategoryReply)
+	err := c.cc.Invoke(ctx, RealWorld_CategoryList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +87,8 @@ type RealWorldServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 	WebSiteList(context.Context, *WebsiteRequest) (*WebsiteReply, error)
-	WebsiteHome(context.Context, *WebHomeRequest) (*WebsiteList, error)
+	WebSiteHome(context.Context, *WebHomeRequest) (*WebSiteHomeReply, error)
+	CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error)
 	mustEmbedUnimplementedRealWorldServer()
 }
 
@@ -90,8 +102,11 @@ func (UnimplementedRealWorldServer) SayHello(context.Context, *HelloRequest) (*H
 func (UnimplementedRealWorldServer) WebSiteList(context.Context, *WebsiteRequest) (*WebsiteReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WebSiteList not implemented")
 }
-func (UnimplementedRealWorldServer) WebsiteHome(context.Context, *WebHomeRequest) (*WebsiteList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method WebsiteHome not implemented")
+func (UnimplementedRealWorldServer) WebSiteHome(context.Context, *WebHomeRequest) (*WebSiteHomeReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WebSiteHome not implemented")
+}
+func (UnimplementedRealWorldServer) CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryList not implemented")
 }
 func (UnimplementedRealWorldServer) mustEmbedUnimplementedRealWorldServer() {}
 
@@ -142,20 +157,38 @@ func _RealWorld_WebSiteList_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RealWorld_WebsiteHome_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _RealWorld_WebSiteHome_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WebHomeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RealWorldServer).WebsiteHome(ctx, in)
+		return srv.(RealWorldServer).WebSiteHome(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RealWorld_WebsiteHome_FullMethodName,
+		FullMethod: RealWorld_WebSiteHome_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RealWorldServer).WebsiteHome(ctx, req.(*WebHomeRequest))
+		return srv.(RealWorldServer).WebSiteHome(ctx, req.(*WebHomeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RealWorld_CategoryList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RealWorldServer).CategoryList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RealWorld_CategoryList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RealWorldServer).CategoryList(ctx, req.(*CategoryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -176,8 +209,12 @@ var RealWorld_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _RealWorld_WebSiteList_Handler,
 		},
 		{
-			MethodName: "WebsiteHome",
-			Handler:    _RealWorld_WebsiteHome_Handler,
+			MethodName: "WebSiteHome",
+			Handler:    _RealWorld_WebSiteHome_Handler,
+		},
+		{
+			MethodName: "CategoryList",
+			Handler:    _RealWorld_CategoryList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

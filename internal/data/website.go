@@ -2,8 +2,8 @@ package data
 
 import (
 	"context"
-
 	"github.com/go-kratos/kratos/v2/log"
+	v1 "go-server/api/realworld/v1"
 	"go-server/internal/biz"
 	"go-server/internal/data/ent/website"
 )
@@ -50,6 +50,14 @@ func (w *websiteRepo) WebSiteList(ctx context.Context, category int32, typ int32
 		})
 	}
 	return rv, nil
+}
+
+func (w *websiteRepo) WebSiteHome(ctx context.Context) ([]*v1.WebsiteReply, error) {
+	//TODO implement me
+	rv := make([]*v1.WebsiteReply, 0)
+
+	return rv, nil
+	//panic("implement me")
 }
 
 // NewWebsiteRepo .

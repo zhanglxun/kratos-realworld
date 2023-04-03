@@ -31,40 +31,44 @@ func (Website) Fields() []ent.Field {
 		}).Comment("主键ID").Unique(),
 
 		field.Int32("sort_id").SchemaType(map[string]string{
-			dialect.MySQL: "int(8)", // Override MySQL.
+			dialect.MySQL: "int(11)", // Override MySQL.
 		}).Optional().Comment("排序id"),
 
 		field.Int32("category").SchemaType(map[string]string{
-			dialect.MySQL: "int(2)", // Override MySQL.
-		}).Optional().Comment("分类：1：工具和应用2：灵感和创作"),
+			dialect.MySQL: "int(11)", // Override MySQL.
+		}).Optional().Comment("类别id"),
 
 		field.Int32("type").SchemaType(map[string]string{
-			dialect.MySQL: "int(2)", // Override MySQL.
-		}).Optional().Comment("分类：1：AI，2：工具"),
+			dialect.MySQL: "int(11)", // Override MySQL.
+		}).Optional().Comment("分类,1:AI，2：工具"),
 
 		field.String("website_name").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(255)", // Override MySQL.
-		}).Optional().Comment("网站的名称"),
+		}).Optional().Comment("名称"),
 
 		field.String("website_icon").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(255)", // Override MySQL.
-		}).Optional().Comment("网站icon地址"),
+		}).Optional().Comment("图标"),
 
 		field.String("website_url").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(255)", // Override MySQL.
-		}).Optional().Comment("网站的url"),
+		}).Optional().Comment("路径地址"),
 
 		field.String("summary").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(512)", // Override MySQL.
-		}).Optional().Comment("简介"),
+		}).Optional().Comment("摘要"),
 
 		field.String("description").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(1024)", // Override MySQL.
-		}).Optional().Comment("描述介绍"),
+		}).Optional().Comment("描述"),
+
+		field.String("status").SchemaType(map[string]string{
+			dialect.MySQL: "varchar(255)", // Override MySQL.
+		}).Optional().Comment("状态"),
 
 		field.Int64("create_id").SchemaType(map[string]string{
 			dialect.MySQL: "bigint(20)", // Override MySQL.
-		}).Optional().Comment("创建人"),
+		}).Optional().Comment("创建人id"),
 
 		field.Time("create_time").SchemaType(map[string]string{
 			dialect.MySQL: "datetime", // Override MySQL.
@@ -72,11 +76,11 @@ func (Website) Fields() []ent.Field {
 
 		field.Int64("modify_id").SchemaType(map[string]string{
 			dialect.MySQL: "bigint(20)", // Override MySQL.
-		}).Optional().Comment("修改人"),
+		}).Optional().Comment("修改人id"),
 
 		field.Time("modify_time").SchemaType(map[string]string{
 			dialect.MySQL: "datetime", // Override MySQL.
-		}).Optional().Default(time.Now).UpdateDefault(time.Now),
+		}).Optional().Default(time.Now).UpdateDefault(time.Now).Comment("修改时间"),
 	}
 
 }

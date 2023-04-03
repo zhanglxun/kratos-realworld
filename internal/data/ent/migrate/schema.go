@@ -30,15 +30,15 @@ var (
 	}
 	// CArticleColumns holds the columns for the "c_article" table.
 	CArticleColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt32, Increment: true, SchemaType: map[string]string{"mysql": "int(20)"}},
-		{Name: "sort_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(2)"}},
+		{Name: "id", Type: field.TypeInt64, Increment: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},
+		{Name: "sort_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
 		{Name: "name", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(200)"}},
-		{Name: "category_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(20)"}},
+		{Name: "category_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
 		{Name: "recommend", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
 		{Name: "description", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
 		{Name: "content_body", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "longtext"}},
 		{Name: "image_url", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(200)"}},
-		{Name: "status", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(2)"}},
+		{Name: "status", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
 		{Name: "click_count", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
 		{Name: "like_count", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
 		{Name: "create_id", Type: field.TypeInt64, Nullable: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},
@@ -54,9 +54,15 @@ var (
 	}
 	// CCategoryColumns holds the columns for the "c_category" table.
 	CCategoryColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt32, Increment: true, SchemaType: map[string]string{"mysql": "int(20)"}},
+		{Name: "id", Type: field.TypeInt64, Increment: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},
+		{Name: "parent_id", Type: field.TypeInt64, Nullable: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},
 		{Name: "category_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
 		{Name: "category_name", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(32)"}},
+		{Name: "status", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
+		{Name: "create_id", Type: field.TypeInt64, Nullable: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},
+		{Name: "create_time", Type: field.TypeTime, Nullable: true, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "modify_id", Type: field.TypeInt64, Nullable: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},
+		{Name: "modify_time", Type: field.TypeTime, Nullable: true, SchemaType: map[string]string{"mysql": "datetime"}},
 	}
 	// CCategoryTable holds the schema information for the "c_category" table.
 	CCategoryTable = &schema.Table{
@@ -67,14 +73,15 @@ var (
 	// CWebsiteColumns holds the columns for the "c_website" table.
 	CWebsiteColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},
-		{Name: "sort_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(8)"}},
-		{Name: "category", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(2)"}},
-		{Name: "type", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(2)"}},
+		{Name: "sort_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
+		{Name: "category", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
+		{Name: "type", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int(11)"}},
 		{Name: "website_name", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
 		{Name: "website_icon", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
 		{Name: "website_url", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
 		{Name: "summary", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(512)"}},
 		{Name: "description", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(1024)"}},
+		{Name: "status", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
 		{Name: "create_id", Type: field.TypeInt64, Nullable: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},
 		{Name: "create_time", Type: field.TypeTime, Nullable: true, SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "modify_id", Type: field.TypeInt64, Nullable: true, SchemaType: map[string]string{"mysql": "bigint(20)"}},

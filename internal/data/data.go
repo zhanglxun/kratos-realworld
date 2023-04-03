@@ -21,6 +21,7 @@ import (
 var ProviderSet = wire.NewSet(
 	NewEntClient,
 	NewWebsiteRepo,
+	NewCategoryRepo,
 	NewGreeterRepo,
 )
 

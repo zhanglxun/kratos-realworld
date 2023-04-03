@@ -131,6 +131,20 @@ func (wc *WebsiteCreate) SetNillableDescription(s *string) *WebsiteCreate {
 	return wc
 }
 
+// SetStatus sets the "status" field.
+func (wc *WebsiteCreate) SetStatus(s string) *WebsiteCreate {
+	wc.mutation.SetStatus(s)
+	return wc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (wc *WebsiteCreate) SetNillableStatus(s *string) *WebsiteCreate {
+	if s != nil {
+		wc.SetStatus(*s)
+	}
+	return wc
+}
+
 // SetCreateID sets the "create_id" field.
 func (wc *WebsiteCreate) SetCreateID(i int64) *WebsiteCreate {
 	wc.mutation.SetCreateID(i)
@@ -303,6 +317,10 @@ func (wc *WebsiteCreate) createSpec() (*Website, *sqlgraph.CreateSpec) {
 	if value, ok := wc.mutation.Description(); ok {
 		_spec.SetField(website.FieldDescription, field.TypeString, value)
 		_node.Description = value
+	}
+	if value, ok := wc.mutation.Status(); ok {
+		_spec.SetField(website.FieldStatus, field.TypeString, value)
+		_node.Status = value
 	}
 	if value, ok := wc.mutation.CreateID(); ok {
 		_spec.SetField(website.FieldCreateID, field.TypeInt64, value)

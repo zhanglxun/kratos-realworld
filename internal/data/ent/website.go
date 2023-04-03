@@ -19,27 +19,29 @@ type Website struct {
 	ID int64 `json:"id,omitempty"`
 	// 排序id
 	SortID int32 `json:"sort_id,omitempty"`
-	// 分类：1：工具和应用2：灵感和创作
+	// 类别id
 	Category int32 `json:"category,omitempty"`
-	// 分类：1：AI，2：工具
+	// 分类,1:AI，2：工具
 	Type int32 `json:"type,omitempty"`
-	// 网站的名称
+	// 名称
 	WebsiteName string `json:"website_name,omitempty"`
-	// 网站icon地址
+	// 图标
 	WebsiteIcon string `json:"website_icon,omitempty"`
-	// 网站的url
+	// 路径地址
 	WebsiteURL string `json:"website_url,omitempty"`
-	// 简介
+	// 摘要
 	Summary string `json:"summary,omitempty"`
-	// 描述介绍
+	// 描述
 	Description string `json:"description,omitempty"`
-	// 创建人
+	// 状态
+	Status string `json:"status,omitempty"`
+	// 创建人id
 	CreateID int64 `json:"create_id,omitempty"`
 	// 创建时间
 	CreateTime time.Time `json:"create_time,omitempty"`
-	// 修改人
+	// 修改人id
 	ModifyID int64 `json:"modify_id,omitempty"`
-	// ModifyTime holds the value of the "modify_time" field.
+	// 修改时间
 	ModifyTime time.Time `json:"modify_time,omitempty"`
 }
 
@@ -50,7 +52,7 @@ func (*Website) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case website.FieldID, website.FieldSortID, website.FieldCategory, website.FieldType, website.FieldCreateID, website.FieldModifyID:
 			values[i] = new(sql.NullInt64)
-		case website.FieldWebsiteName, website.FieldWebsiteIcon, website.FieldWebsiteURL, website.FieldSummary, website.FieldDescription:
+		case website.FieldWebsiteName, website.FieldWebsiteIcon, website.FieldWebsiteURL, website.FieldSummary, website.FieldDescription, website.FieldStatus:
 			values[i] = new(sql.NullString)
 		case website.FieldCreateTime, website.FieldModifyTime:
 			values[i] = new(sql.NullTime)
@@ -122,6 +124,12 @@ func (w *Website) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field description", values[i])
 			} else if value.Valid {
 				w.Description = value.String
+			}
+		case website.FieldStatus:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				w.Status = value.String
 			}
 		case website.FieldCreateID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -198,6 +206,9 @@ func (w *Website) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("description=")
 	builder.WriteString(w.Description)
+	builder.WriteString(", ")
+	builder.WriteString("status=")
+	builder.WriteString(w.Status)
 	builder.WriteString(", ")
 	builder.WriteString("create_id=")
 	builder.WriteString(fmt.Sprintf("%v", w.CreateID))

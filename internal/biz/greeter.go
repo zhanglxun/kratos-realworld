@@ -19,7 +19,7 @@ type Greeter struct {
 	Hello string
 }
 
-// GreeterRepo is a Greater repo.
+// GreeterRepo is a Greater repoWs.
 type GreeterRepo interface {
 	Save(context.Context, *Greeter) (*Greeter, error)
 	Update(context.Context, *Greeter) (*Greeter, error)

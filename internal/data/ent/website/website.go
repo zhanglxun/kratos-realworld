@@ -27,6 +27,8 @@ const (
 	FieldSummary = "summary"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
+	// FieldStatus holds the string denoting the status field in the database.
+	FieldStatus = "status"
 	// FieldCreateID holds the string denoting the create_id field in the database.
 	FieldCreateID = "create_id"
 	// FieldCreateTime holds the string denoting the create_time field in the database.
@@ -50,6 +52,7 @@ var Columns = []string{
 	FieldWebsiteURL,
 	FieldSummary,
 	FieldDescription,
+	FieldStatus,
 	FieldCreateID,
 	FieldCreateTime,
 	FieldModifyID,

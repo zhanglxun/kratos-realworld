@@ -5,6 +5,7 @@ package ent
 import (
 	"go-server/internal/data/ent/account"
 	"go-server/internal/data/ent/article"
+	"go-server/internal/data/ent/category"
 	"go-server/internal/data/ent/schema"
 	"go-server/internal/data/ent/website"
 	"time"
@@ -38,14 +39,26 @@ func init() {
 	article.DefaultModifyTime = articleDescModifyTime.Default.(func() time.Time)
 	// article.UpdateDefaultModifyTime holds the default value on update for the modify_time field.
 	article.UpdateDefaultModifyTime = articleDescModifyTime.UpdateDefault.(func() time.Time)
+	categoryFields := schema.Category{}.Fields()
+	_ = categoryFields
+	// categoryDescCreateTime is the schema descriptor for create_time field.
+	categoryDescCreateTime := categoryFields[6].Descriptor()
+	// category.DefaultCreateTime holds the default value on creation for the create_time field.
+	category.DefaultCreateTime = categoryDescCreateTime.Default.(func() time.Time)
+	// categoryDescModifyTime is the schema descriptor for modify_time field.
+	categoryDescModifyTime := categoryFields[8].Descriptor()
+	// category.DefaultModifyTime holds the default value on creation for the modify_time field.
+	category.DefaultModifyTime = categoryDescModifyTime.Default.(func() time.Time)
+	// category.UpdateDefaultModifyTime holds the default value on update for the modify_time field.
+	category.UpdateDefaultModifyTime = categoryDescModifyTime.UpdateDefault.(func() time.Time)
 	websiteFields := schema.Website{}.Fields()
 	_ = websiteFields
 	// websiteDescCreateTime is the schema descriptor for create_time field.
-	websiteDescCreateTime := websiteFields[10].Descriptor()
+	websiteDescCreateTime := websiteFields[11].Descriptor()
 	// website.DefaultCreateTime holds the default value on creation for the create_time field.
 	website.DefaultCreateTime = websiteDescCreateTime.Default.(func() time.Time)
 	// websiteDescModifyTime is the schema descriptor for modify_time field.
-	websiteDescModifyTime := websiteFields[12].Descriptor()
+	websiteDescModifyTime := websiteFields[13].Descriptor()
 	// website.DefaultModifyTime holds the default value on creation for the modify_time field.
 	website.DefaultModifyTime = websiteDescModifyTime.Default.(func() time.Time)
 	// website.UpdateDefaultModifyTime holds the default value on update for the modify_time field.

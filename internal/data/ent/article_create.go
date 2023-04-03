@@ -216,7 +216,7 @@ func (ac *ArticleCreate) SetNillableModifyTime(t *time.Time) *ArticleCreate {
 }
 
 // SetID sets the "id" field.
-func (ac *ArticleCreate) SetID(i int32) *ArticleCreate {
+func (ac *ArticleCreate) SetID(i int64) *ArticleCreate {
 	ac.mutation.SetID(i)
 	return ac
 }
@@ -284,7 +284,7 @@ func (ac *ArticleCreate) sqlSave(ctx context.Context) (*Article, error) {
 	}
 	if _spec.ID.Value != _node.ID {
 		id := _spec.ID.Value.(int64)
-		_node.ID = int32(id)
+		_node.ID = int64(id)
 	}
 	ac.mutation.id = &_node.ID
 	ac.mutation.done = true
@@ -294,7 +294,7 @@ func (ac *ArticleCreate) sqlSave(ctx context.Context) (*Article, error) {
 func (ac *ArticleCreate) createSpec() (*Article, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Article{config: ac.config}
-		_spec = sqlgraph.NewCreateSpec(article.Table, sqlgraph.NewFieldSpec(article.FieldID, field.TypeInt32))
+		_spec = sqlgraph.NewCreateSpec(article.Table, sqlgraph.NewFieldSpec(article.FieldID, field.TypeInt64))
 	)
 	if id, ok := ac.mutation.ID(); ok {
 		_node.ID = id
@@ -402,7 +402,7 @@ func (acb *ArticleCreateBulk) Save(ctx context.Context) ([]*Article, error) {
 				mutation.id = &nodes[i].ID
 				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int32(id)
+					nodes[i].ID = int64(id)
 				}
 				mutation.done = true
 				return nodes[i], nil
