@@ -5,6 +5,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	v1 "go-server/api/realworld/v1"
 	"go-server/internal/biz"
+	"go-server/internal/data/ent"
 	"go-server/internal/data/ent/website"
 )
 
@@ -33,7 +34,7 @@ func (w *websiteRepo) WebSiteList(ctx context.Context, typ int32) ([]*biz.Websit
 	ws, _ := w.data.db.Website.Query().
 		Where(
 			website.TypeEQ(typ),
-		).All(ctx)
+		).Order(ent.Asc(website.FieldSortID)).All(ctx)
 	rv := make([]*biz.Website, 0)
 	for _, value := range ws {
 		//fmt.Printf("slice at %d is : %s \n", i, value.WebsiteName+"-"+value.WebsiteURL)
