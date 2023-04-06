@@ -5,7 +5,7 @@ import (
 	v1 "go-server/api/realworld/v1"
 )
 
-func (s *RealWorldService) CategoryList(ctx context.Context, req *v1.CategoryRequest) (ws *v1.MultipleCategoryReply, err error) {
+func (s *ContentService) CategoryList(ctx context.Context, req *v1.CategoryRequest) (ws *v1.MultipleCategoryReply, err error) {
 	categoryList, _ := s.ws.CategoryList(ctx, req.CatePare)
 	reply := &v1.MultipleCategoryReply{}
 	for _, p := range categoryList {

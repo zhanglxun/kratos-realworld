@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package realoworld.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "kratos-realworld/api/realoworld/v1;v1";
+
+service SystemService {
+
+  //用户列表
+  rpc UserList (UserRequest) returns (UserReply) {
+    option (google.api.http) = {
+      get: "/User/getUserList"
+    };
+  }
+  //账号登录rpc接口定义
+  rpc Login (LoginRequest) returns (LoginReply) {
+    option (google.api.http) = {
+      post: "/User/login",
+      body: "*", //body: "*"
+    };
+  }
+
+}
+
+//用户列表请求参数
+message UserRequest {
+  string name = 1;
+}
+message UserReply {
+  string message = 1;
+}
+
+//登录请求参数
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+message LoginReply {
+  string message = 1;
+}

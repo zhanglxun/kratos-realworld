@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.6.1
 // - protoc             v3.21.12
-// source: realworld/v1/realworld.proto
+// source: realworld/v1/content.proto
 
 package v1
 
@@ -19,12 +19,12 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationRealWorldCategoryList = "/realoworld.v1.RealWorld/CategoryList"
-const OperationRealWorldSayHello = "/realoworld.v1.RealWorld/SayHello"
-const OperationRealWorldWebSiteHome = "/realoworld.v1.RealWorld/WebSiteHome"
-const OperationRealWorldWebSiteList = "/realoworld.v1.RealWorld/WebSiteList"
+const OperationContentServiceCategoryList = "/realoworld.v1.ContentService/CategoryList"
+const OperationContentServiceSayHello = "/realoworld.v1.ContentService/SayHello"
+const OperationContentServiceWebSiteHome = "/realoworld.v1.ContentService/WebSiteHome"
+const OperationContentServiceWebSiteList = "/realoworld.v1.ContentService/WebSiteList"
 
-type RealWorldHTTPServer interface {
+type ContentServiceHTTPServer interface {
 	CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error)
 	// SayHello Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
@@ -32,15 +32,15 @@ type RealWorldHTTPServer interface {
 	WebSiteList(context.Context, *WebsiteRequest) (*WebsiteReply, error)
 }
 
-func RegisterRealWorldHTTPServer(s *http.Server, srv RealWorldHTTPServer) {
+func RegisterContentServiceHTTPServer(s *http.Server, srv ContentServiceHTTPServer) {
 	r := s.Route("/")
-	r.GET("/realworld/{name}", _RealWorld_SayHello0_HTTP_Handler(srv))
-	r.GET("/website/websiteList", _RealWorld_WebSiteList0_HTTP_Handler(srv))
-	r.GET("/website/websiteHome", _RealWorld_WebSiteHome0_HTTP_Handler(srv))
-	r.GET("/category/CategoryList", _RealWorld_CategoryList0_HTTP_Handler(srv))
+	r.GET("/realworld/{name}", _ContentService_SayHello0_HTTP_Handler(srv))
+	r.GET("/website/websiteList", _ContentService_WebSiteList0_HTTP_Handler(srv))
+	r.GET("/website/websiteHome", _ContentService_WebSiteHome0_HTTP_Handler(srv))
+	r.GET("/category/CategoryList", _ContentService_CategoryList0_HTTP_Handler(srv))
 }
 
-func _RealWorld_SayHello0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
+func _ContentService_SayHello0_HTTP_Handler(srv ContentServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in HelloRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -49,7 +49,7 @@ func _RealWorld_SayHello0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Co
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRealWorldSayHello)
+		http.SetOperation(ctx, OperationContentServiceSayHello)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.SayHello(ctx, req.(*HelloRequest))
 		})
@@ -62,13 +62,13 @@ func _RealWorld_SayHello0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Co
 	}
 }
 
-func _RealWorld_WebSiteList0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
+func _ContentService_WebSiteList0_HTTP_Handler(srv ContentServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in WebsiteRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRealWorldWebSiteList)
+		http.SetOperation(ctx, OperationContentServiceWebSiteList)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.WebSiteList(ctx, req.(*WebsiteRequest))
 		})
@@ -81,13 +81,13 @@ func _RealWorld_WebSiteList0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http
 	}
 }
 
-func _RealWorld_WebSiteHome0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
+func _ContentService_WebSiteHome0_HTTP_Handler(srv ContentServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in WebHomeRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRealWorldWebSiteHome)
+		http.SetOperation(ctx, OperationContentServiceWebSiteHome)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.WebSiteHome(ctx, req.(*WebHomeRequest))
 		})
@@ -100,13 +100,13 @@ func _RealWorld_WebSiteHome0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http
 	}
 }
 
-func _RealWorld_CategoryList0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
+func _ContentService_CategoryList0_HTTP_Handler(srv ContentServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CategoryRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRealWorldCategoryList)
+		http.SetOperation(ctx, OperationContentServiceCategoryList)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.CategoryList(ctx, req.(*CategoryRequest))
 		})
@@ -119,26 +119,26 @@ func _RealWorld_CategoryList0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx htt
 	}
 }
 
-type RealWorldHTTPClient interface {
+type ContentServiceHTTPClient interface {
 	CategoryList(ctx context.Context, req *CategoryRequest, opts ...http.CallOption) (rsp *MultipleCategoryReply, err error)
 	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
 	WebSiteHome(ctx context.Context, req *WebHomeRequest, opts ...http.CallOption) (rsp *MultipleWebsiteReply, err error)
 	WebSiteList(ctx context.Context, req *WebsiteRequest, opts ...http.CallOption) (rsp *WebsiteReply, err error)
 }
 
-type RealWorldHTTPClientImpl struct {
+type ContentServiceHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewRealWorldHTTPClient(client *http.Client) RealWorldHTTPClient {
-	return &RealWorldHTTPClientImpl{client}
+func NewContentServiceHTTPClient(client *http.Client) ContentServiceHTTPClient {
+	return &ContentServiceHTTPClientImpl{client}
 }
 
-func (c *RealWorldHTTPClientImpl) CategoryList(ctx context.Context, in *CategoryRequest, opts ...http.CallOption) (*MultipleCategoryReply, error) {
+func (c *ContentServiceHTTPClientImpl) CategoryList(ctx context.Context, in *CategoryRequest, opts ...http.CallOption) (*MultipleCategoryReply, error) {
 	var out MultipleCategoryReply
 	pattern := "/category/CategoryList"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationRealWorldCategoryList))
+	opts = append(opts, http.Operation(OperationContentServiceCategoryList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -147,11 +147,11 @@ func (c *RealWorldHTTPClientImpl) CategoryList(ctx context.Context, in *Category
 	return &out, err
 }
 
-func (c *RealWorldHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloReply, error) {
+func (c *ContentServiceHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloReply, error) {
 	var out HelloReply
 	pattern := "/realworld/{name}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationRealWorldSayHello))
+	opts = append(opts, http.Operation(OperationContentServiceSayHello))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -160,11 +160,11 @@ func (c *RealWorldHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest
 	return &out, err
 }
 
-func (c *RealWorldHTTPClientImpl) WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...http.CallOption) (*MultipleWebsiteReply, error) {
+func (c *ContentServiceHTTPClientImpl) WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...http.CallOption) (*MultipleWebsiteReply, error) {
 	var out MultipleWebsiteReply
 	pattern := "/website/websiteHome"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationRealWorldWebSiteHome))
+	opts = append(opts, http.Operation(OperationContentServiceWebSiteHome))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -173,11 +173,11 @@ func (c *RealWorldHTTPClientImpl) WebSiteHome(ctx context.Context, in *WebHomeRe
 	return &out, err
 }
 
-func (c *RealWorldHTTPClientImpl) WebSiteList(ctx context.Context, in *WebsiteRequest, opts ...http.CallOption) (*WebsiteReply, error) {
+func (c *ContentServiceHTTPClientImpl) WebSiteList(ctx context.Context, in *WebsiteRequest, opts ...http.CallOption) (*WebsiteReply, error) {
 	var out WebsiteReply
 	pattern := "/website/websiteList"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationRealWorldWebSiteList))
+	opts = append(opts, http.Operation(OperationContentServiceWebSiteList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

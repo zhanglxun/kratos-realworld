@@ -12,7 +12,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.RealWorldService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.ContentService, logger log.Logger) *http.Server {
 	//注册openAPIV2
 	openAPIhandler := openapiv2.NewHandler()
 
@@ -42,6 +42,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.RealWorldService, logger log
 	//注册swagger
 	srv.HandlePrefix("/q/", openAPIhandler)
 
-	v1.RegisterRealWorldHTTPServer(srv, greeter)
+	v1.RegisterContentServiceHTTPServer(srv, greeter)
 	return srv
 }

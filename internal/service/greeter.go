@@ -8,7 +8,7 @@ import (
 )
 
 // SayHello implements realworld.GreeterServer.
-func (s *RealWorldService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
+func (s *ContentService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
 	g, err := s.uc.CreateGreeter(ctx, &biz.Greeter{Hello: in.Name})
 	if err != nil {
 		return nil, err

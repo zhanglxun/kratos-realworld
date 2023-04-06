@@ -18,11 +18,11 @@ type Category struct {
 }
 
 type CategoryRepo interface {
-	CategoryList(ctx context.Context, category int64) ([]*Category, error)
+	CategoryList(ctx context.Context, category int32) ([]*Category, error)
 }
 
 // CategoryList 依赖注入
-func (ws *ContentUsecase) CategoryList(ctx context.Context, categoryPara int64) (wr []*Category, err error) {
+func (ws *ContentUsecase) CategoryList(ctx context.Context, categoryPara int32) (wr []*Category, err error) {
 	wr, err = ws.repoCa.CategoryList(ctx, categoryPara)
 	return wr, err
 }

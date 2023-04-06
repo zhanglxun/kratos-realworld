@@ -6,14 +6,14 @@ import (
 )
 
 type Website struct {
-	Category    int32
+	Category    int64
 	WebsiteName string
 	WebsiteIcon string
 	WebsiteUrl  string
 	Summary     string
 }
 
-func (s *RealWorldService) WebSiteList(ctx context.Context, req *v1.WebsiteRequest) (ws *v1.WebsiteReply, err error) {
+func (s *ContentService) WebSiteList(ctx context.Context, req *v1.WebsiteRequest) (ws *v1.WebsiteReply, err error) {
 
 	websiteLit, _ := s.ws.WebSiteList(ctx, req.Type)
 	reply := &v1.WebsiteReply{}
@@ -29,11 +29,11 @@ func (s *RealWorldService) WebSiteList(ctx context.Context, req *v1.WebsiteReque
 	return reply, err
 }
 
-func (s *RealWorldService) WebSiteHome(ctx context.Context, req *v1.WebHomeRequest) (mws *v1.MultipleWebsiteReply, err error) {
-	rh, err := s.ws.WebSiteHome(ctx)
-	println(rh)
+func (s *ContentService) WebSiteHome(ctx context.Context, req *v1.WebHomeRequest) (mws *v1.MultipleWebsiteReply, err error) {
+	//rh, err := s.ws.WebSiteHome(ctx)
+
 	ca, err := s.ws.CategoryList(ctx, req.CatePare)
-	ws, _ := s.ws.WebSiteList(ctx, 1)
+	ws, _ := s.ws.WebSiteList(ctx, req.CatePare)
 	reply := &v1.MultipleWebsiteReply{}
 
 	for _, c := range ca {

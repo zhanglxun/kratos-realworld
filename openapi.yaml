@@ -3,21 +3,57 @@
 
 openapi: 3.0.3
 info:
-    title: RealWorld API
-    description: The greeting service definition.
+    title: ""
     version: 0.0.1
 paths:
+    /User/getUserList:
+        get:
+            tags:
+                - SystemService
+            description: 用户列表
+            operationId: SystemService_UserList
+            parameters:
+                - name: name
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/realoworld.v1.UserReply'
+    /User/login:
+        post:
+            tags:
+                - SystemService
+            description: 账号登录rpc接口定义
+            operationId: SystemService_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/realoworld.v1.LoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/realoworld.v1.LoginReply'
     /category/CategoryList:
         get:
             tags:
-                - RealWorld
-            operationId: RealWorld_CategoryList
+                - ContentService
+            operationId: ContentService_CategoryList
             parameters:
                 - name: catePare
                   in: query
                   schema:
                     type: integer
-                    format: int64
+                    format: int32
             responses:
                 "200":
                     description: OK
@@ -28,9 +64,9 @@ paths:
     /realworld/{name}:
         get:
             tags:
-                - RealWorld
+                - ContentService
             description: Sends a greeting
-            operationId: RealWorld_SayHello
+            operationId: ContentService_SayHello
             parameters:
                 - name: name
                   in: path
@@ -47,14 +83,14 @@ paths:
     /website/websiteHome:
         get:
             tags:
-                - RealWorld
-            operationId: RealWorld_WebSiteHome
+                - ContentService
+            operationId: ContentService_WebSiteHome
             parameters:
                 - name: catePare
                   in: query
                   schema:
                     type: integer
-                    format: int64
+                    format: int32
             responses:
                 "200":
                     description: OK
@@ -65,8 +101,8 @@ paths:
     /website/websiteList:
         get:
             tags:
-                - RealWorld
-            operationId: RealWorld_WebSiteList
+                - ContentService
+            operationId: ContentService_WebSiteList
             parameters:
                 - name: category
                   in: query
@@ -93,6 +129,19 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
+        realoworld.v1.LoginReply:
+            type: object
+            properties:
+                message:
+                    type: string
+        realoworld.v1.LoginRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+            description: 登录请求参数
         realoworld.v1.MultipleCategoryReply:
             type: object
             properties:
@@ -133,6 +182,11 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/realoworld.v1.WebSite'
+        realoworld.v1.UserReply:
+            type: object
+            properties:
+                message:
+                    type: string
         realoworld.v1.WebSite:
             type: object
             properties:
@@ -163,4 +217,6 @@ components:
                 categoryName:
                     type: string
 tags:
-    - name: RealWorld
+    - name: ContentService
+      description: The greeting service definition.
+    - name: SystemService

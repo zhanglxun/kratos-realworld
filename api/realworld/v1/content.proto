@@ -11,7 +11,7 @@ option go_package = "kratos-realworld/api/realoworld/v1;v1";
 //option java_outer_classname = "realoworldProtoV1";
 
 // The greeting service definition.
-service RealWorld {
+service ContentService {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {
     option (google.api.http) = {
@@ -50,7 +50,7 @@ message HelloReply {
 
 //类别的请求参数
  message  CategoryRequest{
-    int64 catePare=1;
+    int32 catePare=1;
 }
 message  CategoryReply{
   int64 ID=1;
@@ -92,7 +92,7 @@ message WebsiteReply{
 }
 //首页的请求
 message WebHomeRequest{
-  int64 catePare=1;
+  int32 catePare=1;
 }
 message MultipleWebsiteReply{
   message WebsiteReply{

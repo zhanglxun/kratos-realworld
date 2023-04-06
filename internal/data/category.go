@@ -12,11 +12,11 @@ type CategoryRepo struct {
 	log  *log.Helper
 }
 
-func (c *CategoryRepo) CategoryList(ctx context.Context, catePara int64) ([]*biz.Category, error) {
+func (c *CategoryRepo) CategoryList(ctx context.Context, catePara int32) ([]*biz.Category, error) {
 	//TODO implement me
 	cc, _ := c.data.db.Category.Query().
 		Where(
-			category.ParentIDEQ(catePara),
+			category.ParentIDEQ(int64(catePara)),
 		).All(ctx)
 	rv := make([]*biz.Category, 0)
 	for _, value := range cc {

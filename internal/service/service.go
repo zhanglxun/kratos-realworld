@@ -7,19 +7,19 @@ import (
 )
 
 // ProviderSet is service providers.
-var ProviderSet = wire.NewSet(NewRealWorldService)
+var ProviderSet = wire.NewSet(NewContentService)
 
 // RealWorldService is a greeter service.
-type RealWorldService struct {
-	v1.UnimplementedRealWorldServer
+type ContentService struct {
+	v1.UnimplementedContentServiceServer
 	ws *biz.ContentUsecase
 	uc *biz.GreeterUsecase
 }
 
 // NewRealWorldService new a greeter service.
-func NewRealWorldService(
+func NewContentService(
 	uc *biz.GreeterUsecase,
 	ws *biz.ContentUsecase,
-) *RealWorldService {
-	return &RealWorldService{uc: uc, ws: ws}
+) *ContentService {
+	return &ContentService{uc: uc, ws: ws}
 }
