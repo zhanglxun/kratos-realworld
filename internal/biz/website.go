@@ -52,7 +52,6 @@ func (ws *ContentUsecase) WebSiteHome(ctx context.Context) (webHome []*CategoryH
 		reply = append(reply, &CategoryHome{
 			CategoryName: c.CategoryName,
 		})
-
 		for _, w := range wh {
 			if c.CategoryId == w.Category {
 
@@ -73,9 +72,10 @@ func (ws *ContentUsecase) WebSiteHome(ctx context.Context) (webHome []*CategoryH
 type ContentUsecase struct {
 	repoWs WebsiteRepo
 	repoCa CategoryRepo
+	repoAr ArticleRepo
 	log    *log.Helper
 }
 
-func NewWebsiteUsecase(repo WebsiteRepo, repoCa CategoryRepo, logger log.Logger) *ContentUsecase {
-	return &ContentUsecase{repoWs: repo, repoCa: repoCa, log: log.NewHelper(logger)}
+func NewWebsiteUsecase(repo WebsiteRepo, repoCa CategoryRepo, repoAr ArticleRepo, logger log.Logger) *ContentUsecase {
+	return &ContentUsecase{repoWs: repo, repoCa: repoCa, repoAr: repoAr, log: log.NewHelper(logger)}
 }

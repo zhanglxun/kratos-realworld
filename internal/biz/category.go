@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+//分类
 type Category struct {
 	ID           int64
 	ParentId     int64

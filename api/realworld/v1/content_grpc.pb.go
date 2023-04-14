@@ -23,6 +23,7 @@ const (
 	ContentService_WebSiteList_FullMethodName  = "/realoworld.v1.ContentService/WebSiteList"
 	ContentService_WebSiteHome_FullMethodName  = "/realoworld.v1.ContentService/WebSiteHome"
 	ContentService_CategoryList_FullMethodName = "/realoworld.v1.ContentService/CategoryList"
+	ContentService_ArticleList_FullMethodName  = "/realoworld.v1.ContentService/ArticleList"
 )
 
 // ContentServiceClient is the client API for ContentService service.
@@ -34,6 +35,7 @@ type ContentServiceClient interface {
 	WebSiteList(ctx context.Context, in *WebsiteRequest, opts ...grpc.CallOption) (*WebsiteReply, error)
 	WebSiteHome(ctx context.Context, in *WebHomeRequest, opts ...grpc.CallOption) (*MultipleWebsiteReply, error)
 	CategoryList(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*MultipleCategoryReply, error)
+	ArticleList(ctx context.Context, in *ArticleRequest, opts ...grpc.CallOption) (*ListArticleReply, error)
 }
 
 type contentServiceClient struct {
@@ -80,6 +82,15 @@ func (c *contentServiceClient) CategoryList(ctx context.Context, in *CategoryReq
 	return out, nil
 }
 
+func (c *contentServiceClient) ArticleList(ctx context.Context, in *ArticleRequest, opts ...grpc.CallOption) (*ListArticleReply, error) {
+	out := new(ListArticleReply)
+	err := c.cc.Invoke(ctx, ContentService_ArticleList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ContentServiceServer is the server API for ContentService service.
 // All implementations must embed UnimplementedContentServiceServer
 // for forward compatibility
@@ -89,6 +100,7 @@ type ContentServiceServer interface {
 	WebSiteList(context.Context, *WebsiteRequest) (*WebsiteReply, error)
 	WebSiteHome(context.Context, *WebHomeRequest) (*MultipleWebsiteReply, error)
 	CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error)
+	ArticleList(context.Context, *ArticleRequest) (*ListArticleReply, error)
 	mustEmbedUnimplementedContentServiceServer()
 }
 
@@ -107,6 +119,9 @@ func (UnimplementedContentServiceServer) WebSiteHome(context.Context, *WebHomeRe
 }
 func (UnimplementedContentServiceServer) CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryList not implemented")
+}
+func (UnimplementedContentServiceServer) ArticleList(context.Context, *ArticleRequest) (*ListArticleReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ArticleList not implemented")
 }
 func (UnimplementedContentServiceServer) mustEmbedUnimplementedContentServiceServer() {}
 
@@ -193,6 +208,24 @@ func _ContentService_CategoryList_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ContentService_ArticleList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ArticleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServiceServer).ArticleList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ContentService_ArticleList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServiceServer).ArticleList(ctx, req.(*ArticleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ContentService_ServiceDesc is the grpc.ServiceDesc for ContentService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -215,6 +248,10 @@ var ContentService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CategoryList",
 			Handler:    _ContentService_CategoryList_Handler,
+		},
+		{
+			MethodName: "ArticleList",
+			Handler:    _ContentService_ArticleList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

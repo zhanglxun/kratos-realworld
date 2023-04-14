@@ -19,12 +19,14 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationContentServiceArticleList = "/realoworld.v1.ContentService/ArticleList"
 const OperationContentServiceCategoryList = "/realoworld.v1.ContentService/CategoryList"
 const OperationContentServiceSayHello = "/realoworld.v1.ContentService/SayHello"
 const OperationContentServiceWebSiteHome = "/realoworld.v1.ContentService/WebSiteHome"
 const OperationContentServiceWebSiteList = "/realoworld.v1.ContentService/WebSiteList"
 
 type ContentServiceHTTPServer interface {
+	ArticleList(context.Context, *ArticleRequest) (*ListArticleReply, error)
 	CategoryList(context.Context, *CategoryRequest) (*MultipleCategoryReply, error)
 	// SayHello Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
@@ -38,6 +40,7 @@ func RegisterContentServiceHTTPServer(s *http.Server, srv ContentServiceHTTPServ
 	r.GET("/website/websiteList", _ContentService_WebSiteList0_HTTP_Handler(srv))
 	r.GET("/website/websiteHome", _ContentService_WebSiteHome0_HTTP_Handler(srv))
 	r.GET("/category/CategoryList", _ContentService_CategoryList0_HTTP_Handler(srv))
+	r.GET("/article/ArticleList", _ContentService_ArticleList0_HTTP_Handler(srv))
 }
 
 func _ContentService_SayHello0_HTTP_Handler(srv ContentServiceHTTPServer) func(ctx http.Context) error {
@@ -119,7 +122,27 @@ func _ContentService_CategoryList0_HTTP_Handler(srv ContentServiceHTTPServer) fu
 	}
 }
 
+func _ContentService_ArticleList0_HTTP_Handler(srv ContentServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ArticleRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationContentServiceArticleList)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ArticleList(ctx, req.(*ArticleRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListArticleReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type ContentServiceHTTPClient interface {
+	ArticleList(ctx context.Context, req *ArticleRequest, opts ...http.CallOption) (rsp *ListArticleReply, err error)
 	CategoryList(ctx context.Context, req *CategoryRequest, opts ...http.CallOption) (rsp *MultipleCategoryReply, err error)
 	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
 	WebSiteHome(ctx context.Context, req *WebHomeRequest, opts ...http.CallOption) (rsp *MultipleWebsiteReply, err error)
@@ -132,6 +155,19 @@ type ContentServiceHTTPClientImpl struct {
 
 func NewContentServiceHTTPClient(client *http.Client) ContentServiceHTTPClient {
 	return &ContentServiceHTTPClientImpl{client}
+}
+
+func (c *ContentServiceHTTPClientImpl) ArticleList(ctx context.Context, in *ArticleRequest, opts ...http.CallOption) (*ListArticleReply, error) {
+	var out ListArticleReply
+	pattern := "/article/ArticleList"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationContentServiceArticleList))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
 }
 
 func (c *ContentServiceHTTPClientImpl) CategoryList(ctx context.Context, in *CategoryRequest, opts ...http.CallOption) (*MultipleCategoryReply, error) {

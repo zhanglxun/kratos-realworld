@@ -3,6 +3,7 @@ syntax = "proto3";
 package realoworld.v1;
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "kratos-realworld/api/realoworld/v1;v1";
 //暂时用不到java相关的内容可以注释或删除
@@ -32,11 +33,18 @@ service ContentService {
 
   rpc CategoryList(CategoryRequest) returns (MultipleCategoryReply){
     option (google.api.http) = {
-    get:"/category/CategoryList",
+      get:"/category/CategoryList",
+    };
+  }
+
+  rpc ArticleList(ArticleRequest) returns (ListArticleReply){
+    option (google.api.http) = {
+      get:"/article/ArticleList",
     };
   }
 
 }
+
 
 // The request message containing the user's name.
 message HelloRequest {
@@ -103,10 +111,10 @@ message MultipleWebsiteReply{
 }
 //文章
 message ArticleRequest{
-  string CurrentPage=1;
-  string PageNumber=2;
+  int32 CurrentPage=1;
+  int32 PageNumber=2;
 }
-message ArticleReply{
+message Article   {
   int64 id=1;
   int32 sortId=2;
   string name=3;
@@ -115,7 +123,14 @@ message ArticleReply{
   string description=6;
   string contentBody=7;
   string imageUrl=8;
-  int32 status=9;
-  int32 clickCount=10;
-  int32 likeCount=11;
+  int32   status=9;
+  int32   clickCount=10;
+  int32   likeCount=11;
+  int64   CreateId=12;
+  google.protobuf.Timestamp  CreateTime=13;
+  int64   ModifyId =14;
+  google.protobuf.Timestamp  ModifyTime=15;
+}
+message ListArticleReply{
+  repeated Article article=1;
 }

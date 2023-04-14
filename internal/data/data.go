@@ -22,6 +22,7 @@ var ProviderSet = wire.NewSet(
 	NewEntClient,
 	NewWebsiteRepo,
 	NewCategoryRepo,
+	NewArticleRepo,
 	NewGreeterRepo,
 )
 
